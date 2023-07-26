@@ -9,6 +9,13 @@
       tags: setup
 
   tasks:
+    - name: copy env file to server
+      ansible.builtin.template:
+        src: templates/target.env.j2
+        dest: /tmp/target.env
+      become: yes
+      tags: up
+
     - name: up docker container
       community.docker.docker_container:
         name: app
@@ -17,6 +24,7 @@
         state: started
         ports:
           - 80:3000
+        env_file: /tmp/target.env
       become: yes    
       tags: up
 
