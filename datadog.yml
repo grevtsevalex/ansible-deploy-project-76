@@ -1,0 +1,32 @@
+- hosts: webservers
+  vars_files:
+    - group_vars/webservers/vault.yml
+  roles:
+    - role: datadog.datadog
+      become: yes
+      tags: [up, monitoring]
+  vars:
+    datadog_api_key: "{{ datadog_api_key }}"
+    datadog_site: "datadoghq.com"
+    datadog_agent_version: "7.16.0"
+    datadog_config:
+      log_level: INFO
+      apm_config:
+        enabled: true
+      logs_enabled: true  # available with Agent v6 and v7
+    datadog_checks:
+      process:
+        init_config:
+        instances:
+          - name: ssh
+            search_string: ['ssh', 'sshd' ]
+          - name: syslog
+            search_string: ['rsyslog' ]
+            cpu_check_interval: 0.2
+            exact_match: true
+            ignore_denied_access: true
+      http_check:
+        init_config:
+        instances:
+          - name: server1
+            url: http://localhost/
