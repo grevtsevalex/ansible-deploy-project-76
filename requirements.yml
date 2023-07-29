@@ -3,3 +3,5 @@ roles:
     version: 2.2.0
   - name: datadog.datadog
     version: 4.20.0
+collections:
+  - name: community.docker
