@@ -28,5 +28,3 @@
       become: yes    
       tags: up
 
-- name: import datadog playbook
-  ansible.builtin.import_playbook: datadog.yml
